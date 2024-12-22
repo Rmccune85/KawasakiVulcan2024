@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Year Riding My Kawasaki Vulcan 900</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87CEEB, #FFD700);
+            color: #333;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: none;
+        }
+
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+            .photo-gallery div {
+                text-align: center;
+                width: 200px;
+            }
+
+            .photo-gallery img {
+                width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .photo-gallery select {
+                margin-top: 10px;
+                padding: 5px;
+                width: 100%;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+            .buttons button {
+                font-size: 16px;
+                padding: 10px 20px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+        .like-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .dislike-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .count {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        video, iframe {
+            display: block;
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .admin-section {
+            text-align: center;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>First Year Riding My Kawasaki Vulcan 900</h1>
+    </header>
+    <div class="content">
+        <h2>Welcome to My Journey</h2>
+        <p>Riding my motorcycle has been one of the most exciting adventures of 2024. Here, I’ll share my first year of riding, including photos, videos, and music to relive the moments.</p>
+
+        <h2>Photos</h2>
+        <div class="photo-gallery">
+            <!-- First Photo -->
+            <div>
+                <img src="\me with the skeleton.jpg" alt="Me with the Skeleton" />
+                <label for="photo1-dropdown">Rate this photo:</label>
+                <select id="photo1-dropdown" onchange="ratePhoto(1, this.value)">
+                    <option value="">Select</option>
+                    <option value="like">Like</option>
+                    <option value="dislike">Dislike</option>
+                </select>
+                <div class="count">
+                    Photo 1: Likes: <span id="photo1-like">0</span> | Dislikes: <span id="photo1-dislike">0</span>
+                </div>
+            </div>
+
+            <!-- Second Photo -->
+            <div>
+                <img src="\Tiny world.jpg" alt="Tiny World" />
+                <label for="photo2-dropdown">Rate this photo:</label>
+                <select id="photo2-dropdown" onchange="ratePhoto(2, this.value)">
+                    <option value="">Select</option>
+                    <option value="like">Like</option>
+                    <option value="dislike">Dislike</option>
+                </select>
+                <div class="count">
+                    Photo 2: Likes: <span id="photo2-like">0</span> | Dislikes: <span id="photo2-dislike">0</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Videos</h2>
+        <!-- First Video -->
+        <video controls>
+            <source src="\Parking at shoe carnival.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 1)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 1)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video1-like-count">0</span> | Dislikes: <span id="video1-dislike-count">0</span>
+            </div>
+        </div>
+
+        <!-- Second Video -->
+        <video controls>
+            <source src="\Riding with the kids.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 2)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 2)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video2-like-count">0</span> | Dislikes: <span id="video2-dislike-count">0</span>
+            </div>
+        </div>
+
+        <h2>Halloween Time</h2>
+        <iframe src="https://www.youtube.com/embed/Mbcwjf6tKCo"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+        </iframe>
+
+        <h2>Music</h2>
+        <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user9245331/dierks-bentley-ride-on"
+                allow="autoplay">
+        </iframe>
+
+        <p>Thank you for visiting my page! Feel free to explore and enjoy the ride!</p>
+
+        <!-- Admin Login Section -->
+        <div class="buttons">
+            <input type="password" id="admin-code" placeholder="Enter Admin Code" />
+            <button onclick="authenticateAdmin()">Login as Admin</button>
+        </div>
+        <div class="admin-section" id="admin-section">
+            <button onclick="resetCounters()">Reset Counters</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize or load counters
+        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || {
+            1: { like: 0, dislike: 0 },
+            2: { like: 0, dislike: 0 },
+        };
+
+        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || {
+            1: { like: 0, dislike: 0 },
+            2: { like: 0, dislike: 0 },
+        };
+
+        const adminCode = "mySecret123"; // Replace with your admin password
+
+        // Save counters
+        function savePhotoCounts() {
+            localStorage.setItem('photoCounts', JSON.stringify(photoCounts));
+        }
+
+        function saveVideoCounts() {
+            localStorage.setItem('videoCounts', JSON.stringify(videoCounts));
+        }
+
+        // Update UI
+        function updatePhotoUI() {
+            for (const photoId in photoCounts) {
+                document.getElementById(`photo${photoId}-like`).innerText = photoCounts[photoId].like;
+                document.getElementById(`photo${photoId}-dislike`).innerText = photoCounts[photoId].dislike;
+            }
+        }
+
+        function updateVideoUI() {
+            for (const videoId in videoCounts) {
+                document.getElementById(`video${videoId}-like-count`).innerText = videoCounts[videoId].like;
+                document.getElementById(`video${videoId}-dislike-count`).innerText = videoCounts[videoId].dislike;
+            }
+        }
+
+        // Handle rating
+        function ratePhoto(photoId, action) {
+            if (action === "like") {
+                photoCounts[photoId].like++;
+            } else if (action === "dislike") {
+                photoCounts[photoId].dislike++;
+            }
+
+            savePhotoCounts();
+            updatePhotoUI();
+            document.getElementById(`photo${photoId}-dropdown`).value = "";
+        }
+
+        function rateVideo(action, videoId) {
+            if (action === "like") {
+                videoCounts[videoId].like++;
+            } else if (action === "dislike") {
+                videoCounts[videoId].dislike++;
+            }
+
+            saveVideoCounts();
+            updateVideoUI();
+        }
+
+        // Admin authentication
+        function authenticateAdmin() {
+            const code = document.getElementById("admin-code").value;
+            if (code === adminCode) {
+                document.getElementById("admin-section").style.display = "block";
+                alert("Admin access granted.");
+            } else {
+                alert("Incorrect admin code!");
+            }
+        }
+
+        // Reset counters
+        function resetCounters() {
+            localStorage.removeItem("photoCounts");
+            localStorage.removeItem("videoCounts");
+
+            photoCounts = {
+                1: { like: 0, dislike: 0 },
+                2: { like: 0, dislike: 0 },
+            };
+
+            videoCounts = {
+                1: { like: 0, dislike: 0 },
+                2: { like: 0, dislike: 0 },
+            };
+
+            updatePhotoUI();
+            updateVideoUI();
+            alert("Counters have been reset!");
+        }
+
+        // On page load
+        window.onload = function () {
+            updatePhotoUI();
+            updateVideoUI();
+        };
+    </script>
+</body>
+</html>

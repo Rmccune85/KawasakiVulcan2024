@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Year Riding My Kawasaki Vulcan 900</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #87CEEB, #FFD700);
+            color: #333;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: none;
+        }
+
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+            .photo-gallery div {
+                text-align: center;
+                width: 200px;
+            }
+
+            .photo-gallery img {
+                width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .photo-gallery select {
+                margin-top: 10px;
+                padding: 5px;
+                width: 100%;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+            .buttons button {
+                font-size: 16px;
+                padding: 10px 20px;
+                margin: 5px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+        .like-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .dislike-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .count {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        video, iframe {
+            display: block;
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .admin-section {
+            text-align: center;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>First Year Riding My Kawasaki Vulcan 900</h1>
+    </header>
+    <div class="content">
+        <h2>Welcome to My Journey</h2>
+        <p>Riding my motorcycle has been one of the most exciting adventures of 2024. Here, I’ll share my first year of riding, including photos, videos, and music to relive the moments.</p>
+
+        <h2>Photos</h2>
+        <div class="photo-gallery">
+            <!-- First Photo -->
+            <div>
+                <img src="Adding-the-skeleton.jpg" alt="Me with the Skeleton" />
+                <label for="photo1-dropdown">Rate this photo:</label>
+                <select id="photo1-dropdown" onchange="ratePhoto(1, this.value)">
+                    <option value="">Select</option>
+                    <option value="like">Like</option>
+                    <option value="dislike">Dislike</option>
+                </select>
+                <div class="count">
+                    Photo 1: Likes: <span id="photo1-like">0</span> | Dislikes: <span id="photo1-dislike">0</span>
+                </div>
+            </div>
+
+            <!-- Second Photo -->
+            <div>
+                <img src="Tiny-world.jpg" alt="Tiny World" />
+                <label for="photo2-dropdown">Rate this photo:</label>
+                <select id="photo2-dropdown" onchange="ratePhoto(2, this.value)">
+                    <option value="">Select</option>
+                    <option value="like">Like</option>
+                    <option value="dislike">Dislike</option>
+                </select>
+                <div class="count">
+                    Photo 2: Likes: <span id="photo2-like">0</span> | Dislikes: <span id="photo2-dislike">0</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Videos</h2>
+        <!-- First Video -->
+        <video controls>
+            <source src="Parking-at-shoe-carnival.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 1)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 1)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video1-like-count">0</span> | Dislikes: <span id="video1-dislike-count">0</span>
+            </div>
+        </div>
+
+        <!-- Second Video -->
+        <video controls>
+            <source src="Riding-with-the-kids.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 2)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 2)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video2-like-count">0</span> | Dislikes: <span id="video2-dislike-count">0</span>
+            </div>
+        </div>
+    </div>
+    <script>
+            // Functionality as per your original script
+            // Initializing counters and providing functionality for likes and dislikes
+    </script>
+</body>
+</html>
