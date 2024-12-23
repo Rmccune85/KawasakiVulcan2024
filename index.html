@@ -105,7 +105,7 @@
     </div>
 
     <script>
-        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 } };
         const userVotes = JSON.parse(localStorage.getItem('userVotes')) || { photos: {} };
 
         function saveData() {
