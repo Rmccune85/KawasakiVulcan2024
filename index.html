@@ -174,8 +174,104 @@
         </div>
     </div>
     <script>
-            // Functionality as per your original script
-            // Initializing counters and providing functionality for likes and dislikes
+        // Initialize or load counters
+        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || {
+            1: { like: 0, dislike: 0 },
+            2: { like: 0, dislike: 0 },
+        };
+
+        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || {
+            1: { like: 0, dislike: 0 },
+            2: { like: 0, dislike: 0 },
+        };
+
+        const adminCode = "mySecret123"; // Replace with your admin password
+
+        // Save counters
+        function savePhotoCounts() {
+            localStorage.setItem('photoCounts', JSON.stringify(photoCounts));
+        }
+
+        function saveVideoCounts() {
+            localStorage.setItem('videoCounts', JSON.stringify(videoCounts));
+        }
+
+        // Update UI
+        function updatePhotoUI() {
+            for (const photoId in photoCounts) {
+                document.getElementById(`photo${photoId}-like`).innerText = photoCounts[photoId].like;
+                document.getElementById(`photo${photoId}-dislike`).innerText = photoCounts[photoId].dislike;
+            }
+        }
+
+        function updateVideoUI() {
+            for (const videoId in videoCounts) {
+                document.getElementById(`video${videoId}-like-count`).innerText = videoCounts[videoId].like;
+                document.getElementById(`video${videoId}-dislike-count`).innerText = videoCounts[videoId].dislike;
+            }
+        }
+
+        // Handle rating
+        function ratePhoto(photoId, action) {
+            if (action === "like") {
+                photoCounts[photoId].like++;
+            } else if (action === "dislike") {
+                photoCounts[photoId].dislike++;
+            }
+
+            savePhotoCounts();
+            updatePhotoUI();
+            document.getElementById(`photo${photoId}-dropdown`).value = "";
+        }
+
+        function rateVideo(action, videoId) {
+            if (action === "like") {
+                videoCounts[videoId].like++;
+            } else if (action === "dislike") {
+                videoCounts[videoId].dislike++;
+            }
+
+            saveVideoCounts();
+            updateVideoUI();
+        }
+
+        // Admin authentication
+        function authenticateAdmin() {
+            const code = document.getElementById("admin-code").value;
+            if (code === adminCode) {
+                document.getElementById("admin-section").style.display = "block";
+                alert("Admin access granted.");
+            } else {
+                alert("Incorrect admin code!");
+            }
+        }
+
+        // Reset counters
+        function resetCounters() {
+            localStorage.removeItem("photoCounts");
+            localStorage.removeItem("videoCounts");
+
+            photoCounts = {
+                1: { like: 0, dislike: 0 },
+                2: { like: 0, dislike: 0 },
+            };
+
+            videoCounts = {
+                1: { like: 0, dislike: 0 },
+                2: { like: 0, dislike: 0 },
+            };
+
+            updatePhotoUI();
+            updateVideoUI();
+            alert("Counters have been reset!");
+        }
+
+        // On page load
+        window.onload = function () {
+            updatePhotoUI();
+            updateVideoUI();
+        };
     </script>
 </body>
 </html>
+
