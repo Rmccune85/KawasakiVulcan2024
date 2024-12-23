@@ -58,9 +58,51 @@
             border-radius: 5px;
         }
 
+        .buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .buttons button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .like-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .dislike-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
         .count {
             font-size: 18px;
             margin-top: 10px;
+        }
+
+        video, iframe {
+            display: block;
+            width: 100%;
+            max-width: 640px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .admin-section {
+            text-align: center;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
@@ -78,7 +120,7 @@
             <div>
                 <img src="me-with-the-skeleton.jpg" alt="Me with the Skeleton" />
                 <label for="photo1-dropdown">Rate this photo:</label>
-                <select id="photo1-dropdown" onchange="ratePhoto(1, this)">
+                <select id="photo1-dropdown" onchange="ratePhoto(1, this.value)">
                     <option value="">Select</option>
                     <option value="like">Like</option>
                     <option value="dislike">Dislike</option>
@@ -92,7 +134,7 @@
             <div>
                 <img src="Tiny-world.jpg" alt="Tiny World" />
                 <label for="photo2-dropdown">Rate this photo:</label>
-                <select id="photo2-dropdown" onchange="ratePhoto(2, this)">
+                <select id="photo2-dropdown" onchange="ratePhoto(2, this.value)">
                     <option value="">Select</option>
                     <option value="like">Like</option>
                     <option value="dislike">Dislike</option>
@@ -102,14 +144,66 @@
                 </div>
             </div>
         </div>
+
+        <h2>Videos</h2>
+        <!-- First Video -->
+        <video controls>
+            <source src="Parking at shoe carnival.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 1)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 1)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video1-like-count">0</span> | Dislikes: <span id="video1-dislike-count">0</span>
+            </div>
+        </div>
+
+        <!-- Second Video -->
+        <video controls>
+            <source src="Riding with the kids.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="buttons">
+            <button class="like-btn" onclick="rateVideo('like', 2)">Like</button>
+            <button class="dislike-btn" onclick="rateVideo('dislike', 2)">Dislike</button>
+            <div class="count">
+                Likes: <span id="video2-like-count">0</span> | Dislikes: <span id="video2-dislike-count">0</span>
+            </div>
+        </div>
+
+        <h2>Halloween Time</h2>
+        <iframe src="https://www.youtube.com/embed/Mbcwjf6tKCo"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+        </iframe>
+
+        <h2>Music</h2>
+        <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user9245331/dierks-bentley-ride-on"
+                allow="autoplay">
+        </iframe>
+
+        <p>Thank you for visiting my page! Feel free to explore and enjoy the ride!</p>
+
+        <!-- Admin Login Section -->
+        <div class="buttons">
+            <input type="password" id="admin-code" placeholder="Enter Admin Code" />
+            <button onclick="authenticateAdmin()">Login as Admin</button>
+        </div>
+        <div class="admin-section" id="admin-section">
+            <button onclick="resetCounters()">Reset Counters</button>
+        </div>
     </div>
 
     <script>
-        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 } };
-        const userVotes = JSON.parse(localStorage.getItem('userVotes')) || { photos: {} };
+        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        let userVotes = JSON.parse(localStorage.getItem('userVotes')) || { photos: {}, videos: {} }; // Track individual votes
+        const adminCode = "mySecret123";
 
         function saveData() {
             localStorage.setItem('photoCounts', JSON.stringify(photoCounts));
+            localStorage.setItem('videoCounts', JSON.stringify(videoCounts));
             localStorage.setItem('userVotes', JSON.stringify(userVotes));
         }
 
@@ -120,30 +214,75 @@
             }
         }
 
-        function ratePhoto(photoId, dropdown) {
+        function updateVideoUI() {
+            for (const videoId in videoCounts) {
+                document.getElementById(`video${videoId}-like-count`).innerText = videoCounts[videoId].like;
+                document.getElementById(`video${videoId}-dislike-count`).innerText = videoCounts[videoId].dislike;
+            }
+        }
+
+        function ratePhoto(photoId, action) {
             if (userVotes.photos[photoId]) {
                 alert("You have already rated this photo.");
-                dropdown.value = ""; // Reset dropdown to prevent further selection
                 return;
             }
 
-            const action = dropdown.value;
             if (action === "like") {
                 photoCounts[photoId].like++;
             } else if (action === "dislike") {
                 photoCounts[photoId].dislike++;
-            } else {
+            }
+
+            userVotes.photos[photoId] = action; // Mark photo as voted
+            saveData();
+            updatePhotoUI();
+        }
+
+        function rateVideo(action, videoId) {
+            if (userVotes.videos[videoId]) {
+                alert("You have already rated this video.");
                 return;
             }
 
-            userVotes.photos[photoId] = action; // Mark photo as rated
+            if (action === "like") {
+                videoCounts[videoId].like++;
+            } else if (action === "dislike") {
+                videoCounts[videoId].dislike++;
+            }
+
+            userVotes.videos[videoId] = action; // Mark video as voted
+            saveData();
+            updateVideoUI();
+        }
+
+        function authenticateAdmin() {
+            const code = document.getElementById("admin-code").value;
+            if (code === adminCode) {
+                document.getElementById("admin-section").style.display = "block";
+                alert("Admin access granted.");
+            } else {
+                alert("Incorrect admin code!");
+            }
+        }
+
+        function resetCounters() {
+            localStorage.removeItem("photoCounts");
+            localStorage.removeItem("videoCounts");
+            localStorage.removeItem("userVotes");
+
+            photoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+            videoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+            userVotes = { photos: {}, videos: {} };
+
             saveData();
             updatePhotoUI();
-            dropdown.disabled = true; // Disable dropdown to prevent further votes
+            updateVideoUI();
+            alert("Counters and votes have been reset!");
         }
 
         window.onload = function () {
             updatePhotoUI();
+            updateVideoUI();
         };
     </script>
 </body>
