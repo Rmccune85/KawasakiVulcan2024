@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +29,6 @@
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
-            background: none;
         }
 
         .photo-gallery {
@@ -39,39 +38,39 @@
             gap: 20px;
         }
 
-            .photo-gallery div {
-                text-align: center;
-                width: 200px;
-            }
+        .photo-gallery div {
+            text-align: center;
+            width: 200px;
+        }
 
-            .photo-gallery img {
-                width: 100%;
-                height: auto;
-                border-radius: 10px;
-            }
+        .photo-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
 
-            .photo-gallery select {
-                margin-top: 10px;
-                padding: 5px;
-                width: 100%;
-                font-size: 14px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
+        .photo-gallery select {
+            margin-top: 10px;
+            padding: 5px;
+            width: 100%;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
         .buttons {
             text-align: center;
             margin: 20px 0;
         }
 
-            .buttons button {
-                font-size: 16px;
-                padding: 10px 20px;
-                margin: 5px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
+        .buttons button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
         .like-btn {
             background-color: #4CAF50;
@@ -172,31 +171,38 @@
                 Likes: <span id="video2-like-count">0</span> | Dislikes: <span id="video2-dislike-count">0</span>
             </div>
         </div>
+
+        <h2>Halloween Time</h2>
+        <iframe src="https://www.youtube.com/embed/Mbcwjf6tKCo"
+                allow="autoplay; encrypted-media"
+                allowfullscreen>
+        </iframe>
+
+        <h2>Music</h2>
+        <iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user9245331/dierks-bentley-ride-on"
+                allow="autoplay">
+        </iframe>
+
+        <p>Thank you for visiting my page! Feel free to explore and enjoy the ride!</p>
+
+        <!-- Admin Login Section -->
+        <div class="buttons">
+            <input type="password" id="admin-code" placeholder="Enter Admin Code" />
+            <button onclick="authenticateAdmin()">Login as Admin</button>
+        </div>
+        <div class="admin-section" id="admin-section">
+            <button onclick="resetCounters()">Reset Counters</button>
+        </div>
     </div>
+
     <script>
-        // Initialize or load counters
-        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || {
-            1: { like: 0, dislike: 0 },
-            2: { like: 0, dislike: 0 },
-        };
+        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        const adminCode = "mySecret123";
 
-        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || {
-            1: { like: 0, dislike: 0 },
-            2: { like: 0, dislike: 0 },
-        };
+        function savePhotoCounts() { localStorage.setItem('photoCounts', JSON.stringify(photoCounts)); }
+        function saveVideoCounts() { localStorage.setItem('videoCounts', JSON.stringify(videoCounts)); }
 
-        const adminCode = "mySecret123"; // Replace with your admin password
-
-        // Save counters
-        function savePhotoCounts() {
-            localStorage.setItem('photoCounts', JSON.stringify(photoCounts));
-        }
-
-        function saveVideoCounts() {
-            localStorage.setItem('videoCounts', JSON.stringify(videoCounts));
-        }
-
-        // Update UI
         function updatePhotoUI() {
             for (const photoId in photoCounts) {
                 document.getElementById(`photo${photoId}-like`).innerText = photoCounts[photoId].like;
@@ -211,67 +217,39 @@
             }
         }
 
-        // Handle rating
         function ratePhoto(photoId, action) {
-            if (action === "like") {
-                photoCounts[photoId].like++;
-            } else if (action === "dislike") {
-                photoCounts[photoId].dislike++;
-            }
-
+            if (action === "like") photoCounts[photoId].like++;
+            else if (action === "dislike") photoCounts[photoId].dislike++;
             savePhotoCounts();
             updatePhotoUI();
-            document.getElementById(`photo${photoId}-dropdown`).value = "";
         }
 
         function rateVideo(action, videoId) {
-            if (action === "like") {
-                videoCounts[videoId].like++;
-            } else if (action === "dislike") {
-                videoCounts[videoId].dislike++;
-            }
-
+            if (action === "like") videoCounts[videoId].like++;
+            else if (action === "dislike") videoCounts[videoId].dislike++;
             saveVideoCounts();
             updateVideoUI();
         }
 
-        // Admin authentication
         function authenticateAdmin() {
             const code = document.getElementById("admin-code").value;
             if (code === adminCode) {
                 document.getElementById("admin-section").style.display = "block";
                 alert("Admin access granted.");
-            } else {
-                alert("Incorrect admin code!");
-            }
+            } else alert("Incorrect admin code!");
         }
 
-        // Reset counters
         function resetCounters() {
             localStorage.removeItem("photoCounts");
             localStorage.removeItem("videoCounts");
-
-            photoCounts = {
-                1: { like: 0, dislike: 0 },
-                2: { like: 0, dislike: 0 },
-            };
-
-            videoCounts = {
-                1: { like: 0, dislike: 0 },
-                2: { like: 0, dislike: 0 },
-            };
-
+            photoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+            videoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
             updatePhotoUI();
             updateVideoUI();
             alert("Counters have been reset!");
         }
 
-        // On page load
-        window.onload = function () {
-            updatePhotoUI();
-            updateVideoUI();
-        };
+        window.onload = function () { updatePhotoUI(); updateVideoUI(); };
     </script>
 </body>
 </html>
-
