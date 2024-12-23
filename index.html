@@ -195,61 +195,97 @@
         </div>
     </div>
 
-    <script>
-        let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
-        let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
-        const adminCode = "mySecret123";
+   <script>
+    let photoCounts = JSON.parse(localStorage.getItem('photoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+    let videoCounts = JSON.parse(localStorage.getItem('videoCounts')) || { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+    let userVotes = JSON.parse(localStorage.getItem('userVotes')) || { photos: {}, videos: {} }; // Track individual votes
+    const adminCode = "mySecret123";
 
-        function savePhotoCounts() { localStorage.setItem('photoCounts', JSON.stringify(photoCounts)); }
-        function saveVideoCounts() { localStorage.setItem('videoCounts', JSON.stringify(videoCounts)); }
+    function saveData() {
+        localStorage.setItem('photoCounts', JSON.stringify(photoCounts));
+        localStorage.setItem('videoCounts', JSON.stringify(videoCounts));
+        localStorage.setItem('userVotes', JSON.stringify(userVotes));
+    }
 
-        function updatePhotoUI() {
-            for (const photoId in photoCounts) {
-                document.getElementById(`photo${photoId}-like`).innerText = photoCounts[photoId].like;
-                document.getElementById(`photo${photoId}-dislike`).innerText = photoCounts[photoId].dislike;
-            }
+    function updatePhotoUI() {
+        for (const photoId in photoCounts) {
+            document.getElementById(`photo${photoId}-like`).innerText = photoCounts[photoId].like;
+            document.getElementById(`photo${photoId}-dislike`).innerText = photoCounts[photoId].dislike;
+        }
+    }
+
+    function updateVideoUI() {
+        for (const videoId in videoCounts) {
+            document.getElementById(`video${videoId}-like-count`).innerText = videoCounts[videoId].like;
+            document.getElementById(`video${videoId}-dislike-count`).innerText = videoCounts[videoId].dislike;
+        }
+    }
+
+    function ratePhoto(photoId, action) {
+        if (userVotes.photos[photoId]) {
+            alert("You have already rated this photo.");
+            return;
         }
 
-        function updateVideoUI() {
-            for (const videoId in videoCounts) {
-                document.getElementById(`video${videoId}-like-count`).innerText = videoCounts[videoId].like;
-                document.getElementById(`video${videoId}-dislike-count`).innerText = videoCounts[videoId].dislike;
-            }
+        if (action === "like") {
+            photoCounts[photoId].like++;
+        } else if (action === "dislike") {
+            photoCounts[photoId].dislike++;
         }
 
-        function ratePhoto(photoId, action) {
-            if (action === "like") photoCounts[photoId].like++;
-            else if (action === "dislike") photoCounts[photoId].dislike++;
-            savePhotoCounts();
-            updatePhotoUI();
+        userVotes.photos[photoId] = action; // Mark photo as voted
+        saveData();
+        updatePhotoUI();
+    }
+
+    function rateVideo(action, videoId) {
+        if (userVotes.videos[videoId]) {
+            alert("You have already rated this video.");
+            return;
         }
 
-        function rateVideo(action, videoId) {
-            if (action === "like") videoCounts[videoId].like++;
-            else if (action === "dislike") videoCounts[videoId].dislike++;
-            saveVideoCounts();
-            updateVideoUI();
+        if (action === "like") {
+            videoCounts[videoId].like++;
+        } else if (action === "dislike") {
+            videoCounts[videoId].dislike++;
         }
 
-        function authenticateAdmin() {
-            const code = document.getElementById("admin-code").value;
-            if (code === adminCode) {
-                document.getElementById("admin-section").style.display = "block";
-                alert("Admin access granted.");
-            } else alert("Incorrect admin code!");
-        }
+        userVotes.videos[videoId] = action; // Mark video as voted
+        saveData();
+        updateVideoUI();
+    }
 
-        function resetCounters() {
-            localStorage.removeItem("photoCounts");
-            localStorage.removeItem("videoCounts");
-            photoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
-            videoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
-            updatePhotoUI();
-            updateVideoUI();
-            alert("Counters have been reset!");
+    function authenticateAdmin() {
+        const code = document.getElementById("admin-code").value;
+        if (code === adminCode) {
+            document.getElementById("admin-section").style.display = "block";
+            alert("Admin access granted.");
+        } else {
+            alert("Incorrect admin code!");
         }
+    }
 
-        window.onload = function () { updatePhotoUI(); updateVideoUI(); };
-    </script>
+    function resetCounters() {
+        localStorage.removeItem("photoCounts");
+        localStorage.removeItem("videoCounts");
+        localStorage.removeItem("userVotes");
+
+        photoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        videoCounts = { 1: { like: 0, dislike: 0 }, 2: { like: 0, dislike: 0 }};
+        userVotes = { photos: {}, videos: {} };
+
+        saveData();
+        updatePhotoUI();
+        updateVideoUI();
+        alert("Counters and votes have been reset!");
+    }
+
+    window.onload = function () {
+        updatePhotoUI();
+        updateVideoUI();
+    };
+</script>
+
+        
 </body>
 </html>
